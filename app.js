@@ -45,7 +45,7 @@ app.post("/send", async (req, res) => {
     }
 
     const templateName = process.env.TEMPLATE_NAME;   // es: "stima_pronta"
-    const templateLang = process.env.TEMPLATE_LANG || "it_IT";
+    const templateLang = process.env.TEMPLATE_LANG || "it";
 
     if (!templateName) {
       return res.status(500).json({ ok:false, error:"missing TEMPLATE_NAME env" });
