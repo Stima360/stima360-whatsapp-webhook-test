@@ -67,6 +67,17 @@ app.post("/send", async (req, res) => {
           language: { code: templateLang },
           components: [
             {
+              type: "header",
+              parameters: [
+                {
+                  type: "image",
+                  image: {
+                    link: "https://www.stima360.it/stimacentrato.jpg"
+                  }
+                }
+              ]
+            },
+            {
               type: "body",
               parameters: [
                 { type: "text", text: p1 },
