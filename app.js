@@ -35,8 +35,21 @@ app.listen(port, () => {
 app.post("/send", async (req, res) => {
   try {
     const to = String(req.body?.to || "").replace(/\D/g, "");
-    const text = String(req.body?.text || "").trim();
-    if (!to || !text) return res.status(400).json({ ok:false, error:"missing to/text" });
+    const p1 = String(req.body?.p1 || "").trim();
+    const p2 = String(req.body?.p2 || "").trim();
+    const p3 = String(req.body?.p3 || "").trim();
+    const p4 = String(req.body?.p4 || "").trim();
+
+    if (!to || !p1 || !p2 || !p3 || !p4) {
+      return res.status(400).json({ ok:false, error:"missing to/p1/p2/p3/p4" });
+    }
+
+    const templateName = process.env.TEMPLATE_NAME;   // es: "stima_pronta"
+    const templateLang = process.env.TEMPLATE_LANG || "it_IT";
+
+    if (!templateName) {
+      return res.status(500).json({ ok:false, error:"missing TEMPLATE_NAME env" });
+    }
 
     const url = `https://graph.facebook.com/v18.0/${process.env.WHATSAPP_PHONE_ID}/messages`;
     const r = await fetch(url, {
@@ -48,8 +61,22 @@ app.post("/send", async (req, res) => {
       body: JSON.stringify({
         messaging_product: "whatsapp",
         to,
-        type: "text",
-        text: { body: text }
+        type: "template",
+        template: {
+          name: templateName,
+          language: { code: templateLang },
+          components: [
+            {
+              type: "body",
+              parameters: [
+                { type: "text", text: p1 },
+                { type: "text", text: p2 },
+                { type: "text", text: p3 },
+                { type: "text", text: p4 }
+              ]
+            }
+          ]
+        }
       })
     });
 
