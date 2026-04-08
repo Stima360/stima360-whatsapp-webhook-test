@@ -38,10 +38,9 @@ app.post("/send", async (req, res) => {
     const p1 = String(req.body?.p1 || "").trim();
     const p2 = String(req.body?.p2 || "").trim();
     const p3 = String(req.body?.p3 || "").trim();
-    const p4 = String(req.body?.p4 || "").trim();
 
-    if (!to || !p1 || !p2 || !p3 || !p4) {
-      return res.status(400).json({ ok:false, error:"missing to/p1/p2/p3/p4" });
+    if (!to || !p1 || !p2 || !p3) {
+      return res.status(400).json({ ok:false, error:"missing to/p1/p2/p3" });
     }
 
     const templateName = process.env.TEMPLATE_NAME;   // es: "stima_pronta"
@@ -82,8 +81,7 @@ app.post("/send", async (req, res) => {
               parameters: [
                 { type: "text", text: p1 },
                 { type: "text", text: p2 },
-                { type: "text", text: p3 },
-                { type: "text", text: p4 }
+                { type: "text", text: p3 }
               ]
             }
           ]
